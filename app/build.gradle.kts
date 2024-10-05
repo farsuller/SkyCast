@@ -3,8 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
-    id("com.google.devtools.ksp")
-    id("kotlin-parcelize")
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.devtool.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -67,10 +68,12 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.runtime.livedata)
 
     //Coil
     implementation(libs.coil.compose)
 
+    implementation(libs.kotlinx.serialization.json)
 
     //Retrofit
     implementation (libs.retrofit)
@@ -93,6 +96,10 @@ dependencies {
 
     //Datastore
     implementation (libs.androidx.datastore.preferences)
+
+    //Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
 
     // Unit testing
     testImplementation(libs.junit)

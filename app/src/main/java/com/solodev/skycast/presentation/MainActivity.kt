@@ -1,4 +1,4 @@
-package com.solodev.skycast
+package com.solodev.skycast.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.solodev.skycast.presentation.navigation.SkyCastNavigation
 import com.solodev.skycast.ui.theme.SkyCastTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,28 +23,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             SkyCastTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    SkyCastNavigation(modifier =  Modifier.padding(innerPadding))
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SkyCastTheme {
-        Greeting("Android")
     }
 }

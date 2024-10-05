@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "351200229543",
+    "project_id": "skycast-f7403",
+    "storage_bucket": "skycast-f7403.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351200229543:android:435aa3b4da24ecfb104382",
+        "android_client_info": {
+          "package_name": "com.solodev.skycast"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX-Ai2r1N3cx84HD5VuJy6DvEYAIFZ_PA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
