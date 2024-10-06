@@ -21,12 +21,12 @@ class HomeViewModel @Inject constructor(
     val weatherState: StateFlow<WeatherState> = _weatherState.asStateFlow()
 
     init {
-        getWeatherData("Manila,ph", "00fac2a82af6823afd335f2f8684288d")
+        getWeatherData("Manila,ph")
     }
 
-    private fun getWeatherData(city: String, appId: String) {
+    private fun getWeatherData(city: String) {
         viewModelScope.launch {
-            weatherUseCase.getWeather(city, appId)
+            weatherUseCase.getWeather(city)
                 .onStart {
                     _weatherState.value = WeatherState(isLoading = true)
                 }

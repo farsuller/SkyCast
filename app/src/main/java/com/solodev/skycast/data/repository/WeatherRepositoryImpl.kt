@@ -1,5 +1,6 @@
 package com.solodev.skycast.data.repository
 
+import com.solodev.skycast.BuildConfig
 import com.solodev.skycast.data.remote.WeatherApi
 import com.solodev.skycast.data.remote.dto.WeatherResponse
 import com.solodev.skycast.domain.repository.WeatherRepository
@@ -15,9 +16,9 @@ import javax.inject.Inject
 class WeatherRepositoryImpl @Inject constructor(
    private val weatherApi: WeatherApi
 ) : WeatherRepository {
-    override fun getWeather(city: String, appId : String): Flow<Response<WeatherResponse>> = flow {
+    override fun getWeather(city: String): Flow<Response<WeatherResponse>> = flow {
         try {
-            val response = weatherApi.getWeather(city, appId)
+            val response = weatherApi.getWeather(city, BuildConfig.API_KEY)
             emit(response)
         }
         catch (e : Exception){
