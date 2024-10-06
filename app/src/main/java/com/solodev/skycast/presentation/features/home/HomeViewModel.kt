@@ -26,13 +26,13 @@ class HomeViewModel @Inject constructor(
     val forecastState: StateFlow<ForecastState> = _forecastState.asStateFlow()
 
     init {
-        getWeatherData(city = "Manila,ph")
+        getWeatherData(latitude = 14.5964947, longitude = 120.9383599)
         getWeatherForecast(latitude = 14.5964947, longitude = 120.9383599)
     }
 
-    private fun getWeatherData(city: String) {
+    private fun getWeatherData(latitude: Double, longitude: Double) {
         viewModelScope.launch {
-            weatherUseCase.getWeather(city)
+            weatherUseCase.getWeather(latitude = latitude, longitude = longitude)
                 .onStart {
                     _weatherState.value = WeatherState(isLoading = true)
                 }
@@ -53,8 +53,9 @@ class HomeViewModel @Inject constructor(
                             windDeg = weatherResponse.wind.deg,
                             weatherDescription = weatherResponse.weather.firstOrNull()?.description,
                             cloudiness = weatherResponse.clouds.all,
-                            sunrise = weatherResponse.sys.sunrise.toLong(),
-                            sunset = weatherResponse.sys.sunset.toLong(),
+                            sunrise = weatherResponse.sys.sunrise,
+                            sunset = weatherResponse.sys.sunset,
+                            timezone = weatherResponse.timezone,
                             country = weatherResponse.sys.country,
                             isLoading = false,
                             errorMessage = null

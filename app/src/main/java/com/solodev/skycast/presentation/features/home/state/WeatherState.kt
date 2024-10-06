@@ -12,8 +12,9 @@ data class WeatherState(
     val windDeg: Int = 0,
     val weatherDescription: String? = null,
     val cloudiness: Int = 0,
-    val sunrise: Long = 0,
-    val sunset: Long = 0,
+    val sunrise: Int = 0,
+    val sunset: Int = 0,
+    val timezone: Int = 0,
     val country: String = "",
     val isLoading: Boolean = false,
     val errorMessage: String? = null

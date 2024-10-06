@@ -17,9 +17,9 @@ import javax.inject.Inject
 class WeatherRepositoryImpl @Inject constructor(
    private val weatherApi: WeatherApi
 ) : WeatherRepository {
-    override fun getWeather(city: String): Flow<Response<WeatherResponse>> = flow {
+    override fun getWeather(latitude : Double, longitude : Double): Flow<Response<WeatherResponse>> = flow {
         try {
-            val response = weatherApi.getWeather(city = city, apiKey = BuildConfig.API_KEY)
+            val response = weatherApi.getWeather(latitude = latitude, longitude = longitude, apiKey = BuildConfig.API_KEY)
             emit(response)
         }
         catch (e : Exception){

@@ -36,6 +36,7 @@ fun WeatherCard(
             defaultElevation = Elevation.level4
         ),
         modifier = Modifier
+            .fillMaxWidth()
             .padding(horizontal = 10.dp)
             .padding(top = 10.dp),
         shape = RoundedCornerShape(13.dp),
@@ -57,8 +58,6 @@ fun WeatherCard(
                         fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
                         color = MaterialTheme.colorScheme.onSurface,)
 
-
-                    Text(text = "City: ${weatherState.cityName}")
                     val formattedTemperature = String.format("%.2f", kelvinToCelsius(weatherState.temperature))
                     Text(text = "Temperature: $formattedTemperature°C")
 

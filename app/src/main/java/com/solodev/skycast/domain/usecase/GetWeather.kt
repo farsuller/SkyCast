@@ -8,7 +8,7 @@ import retrofit2.Response
 class GetWeather(
     private val repository: WeatherRepository
 ) {
-    operator fun invoke(city: String) : Flow<Response<WeatherResponse>> {
-        return repository.getWeather(city = city)
+    operator fun invoke(latitude : Double, longitude : Double, ) : Flow<Response<WeatherResponse>> {
+        return repository.getWeather(latitude = latitude, longitude = longitude)
     }
 }
