@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
 
     //Splash Api
     implementation (libs.splash.api)
