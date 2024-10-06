@@ -1,6 +1,7 @@
 package com.solodev.skycast.presentation.features.auth.signup
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -34,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.solodev.skycast.R
 import com.solodev.skycast.presentation.features.auth.AuthState
 import com.solodev.skycast.presentation.features.auth.AuthViewModel
 import com.solodev.skycast.presentation.features.auth.components.TextFieldOutline
@@ -74,7 +77,18 @@ fun SignUpScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Signup Page", fontSize = 32.sp)
+        Image(
+            painter = painterResource(id = R.drawable.weather),
+            contentDescription = "logo"
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(text = "Signup here.",
+            fontSize = MaterialTheme.typography.titleLarge.fontSize,
+            fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
+            fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+            color = MaterialTheme.colorScheme.onSurface,)
 
         Spacer(modifier = Modifier.height(16.dp))
 
