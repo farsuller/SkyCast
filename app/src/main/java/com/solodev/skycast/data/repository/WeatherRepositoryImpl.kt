@@ -2,6 +2,7 @@ package com.solodev.skycast.data.repository
 
 import com.solodev.skycast.BuildConfig
 import com.solodev.skycast.data.remote.WeatherApi
+import com.solodev.skycast.data.remote.dto.ForecastResponse
 import com.solodev.skycast.data.remote.dto.WeatherResponse
 import com.solodev.skycast.domain.repository.WeatherRepository
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,7 @@ class WeatherRepositoryImpl @Inject constructor(
 ) : WeatherRepository {
     override fun getWeather(city: String): Flow<Response<WeatherResponse>> = flow {
         try {
-            val response = weatherApi.getWeather(city, BuildConfig.API_KEY)
+            val response = weatherApi.getWeather(city = city, apiKey = BuildConfig.API_KEY)
             emit(response)
         }
         catch (e : Exception){
@@ -26,4 +27,19 @@ class WeatherRepositoryImpl @Inject constructor(
             emit(Response.error(500, errorResponseBody))
         }
     }.flowOn(Dispatchers.IO)
+
+    override fun getWeatherForecast(
+        latitude: Double,
+        longitude: Double
+    ): Flow<Response<ForecastResponse>> = flow {
+        try {
+            val response = weatherApi.getWeatherForecast(latitude = latitude, longitude = longitude, apiKey = BuildConfig.API_KEY)
+            emit(response)
+        }
+        catch (e : Exception){
+            val errorResponseBody = (e.message ?: "Unknown error").toResponseBody(null)
+            emit(Response.error(500, errorResponseBody))
+        }
+    }.flowOn(Dispatchers.IO)
+
 }

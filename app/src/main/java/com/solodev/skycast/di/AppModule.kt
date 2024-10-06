@@ -4,7 +4,8 @@ import com.solodev.skycast.data.remote.WeatherApi
 import com.solodev.skycast.data.repository.WeatherRepositoryImpl
 import com.solodev.skycast.domain.repository.WeatherRepository
 import com.solodev.skycast.domain.usecase.WeatherUseCase
-import com.solodev.skycast.domain.usecase.weather.GetWeather
+import com.solodev.skycast.domain.usecase.GetWeather
+import com.solodev.skycast.domain.usecase.GetWeatherForecast
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,10 +37,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMoviesUseCases(
-        moviesRepository: WeatherRepository,
+        weatherRepository: WeatherRepository,
     ): WeatherUseCase {
         return WeatherUseCase(
-            getWeather = GetWeather(moviesRepository),
+            getWeather = GetWeather(weatherRepository),
+            getWeatherForecast = GetWeatherForecast(weatherRepository)
         )
     }
 }

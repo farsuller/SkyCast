@@ -1,4 +1,4 @@
-package com.solodev.skycast.presentation.features.home.components
+package com.solodev.skycast.presentation.features.home.util
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cloud

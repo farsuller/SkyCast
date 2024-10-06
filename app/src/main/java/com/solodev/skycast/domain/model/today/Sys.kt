@@ -1,4 +1,4 @@
-package com.solodev.skycast.domain.model
+package com.solodev.skycast.domain.model.today
 
 data class Sys(
     val country: String,

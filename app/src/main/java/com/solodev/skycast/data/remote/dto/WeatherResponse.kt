@@ -1,10 +1,9 @@
 package com.solodev.skycast.data.remote.dto
 
-import com.google.gson.annotations.SerializedName
 import com.solodev.skycast.domain.model.Clouds
 import com.solodev.skycast.domain.model.Coordinates
 import com.solodev.skycast.domain.model.Main
-import com.solodev.skycast.domain.model.Sys
+import com.solodev.skycast.domain.model.today.Sys
 import com.solodev.skycast.domain.model.Weather
 import com.solodev.skycast.domain.model.Wind
 
@@ -15,7 +14,6 @@ data class WeatherResponse(
 
     val cod: Int,
 
-    @SerializedName("coord")
     val coord: Coordinates,
 
     val dt: Int,
@@ -32,7 +30,6 @@ data class WeatherResponse(
 
     val visibility: Int,
 
-    @SerializedName("weather")
     val weather: List<Weather>,
 
     val wind: Wind

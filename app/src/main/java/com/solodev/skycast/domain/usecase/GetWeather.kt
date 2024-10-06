@@ -1,4 +1,4 @@
-package com.solodev.skycast.domain.usecase.weather
+package com.solodev.skycast.domain.usecase
 
 import com.solodev.skycast.data.remote.dto.WeatherResponse
 import com.solodev.skycast.domain.repository.WeatherRepository

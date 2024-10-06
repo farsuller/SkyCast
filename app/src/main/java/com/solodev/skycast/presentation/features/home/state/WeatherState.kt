@@ -1,4 +1,4 @@
-package com.solodev.skycast.presentation.features.home
+package com.solodev.skycast.presentation.features.home.state
 
 data class WeatherState(
     val cityName: String = "",
