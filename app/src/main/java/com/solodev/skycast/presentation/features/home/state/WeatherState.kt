@@ -10,6 +10,7 @@ data class WeatherState(
     val humidity: Int = 0,
     val windSpeed: Double = 0.0,
     val windDeg: Int = 0,
+    val weatherMain : String? = null,
     val weatherDescription: String? = null,
     val cloudiness: Int = 0,
     val sunrise: Int = 0,

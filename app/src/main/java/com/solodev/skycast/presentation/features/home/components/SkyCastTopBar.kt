@@ -4,7 +4,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -25,11 +30,11 @@ fun SkyCastTopBar(onSignOutClick:()-> Unit) {
             .fillMaxWidth()
             .background(Color.Red),
         navigationIcon = {
-            Image(
-                modifier = Modifier.size(50.dp),
+            Icon(
+                modifier = Modifier.size(30.dp),
                 painter = painterResource(id = R.drawable.cloud_circle),
                 contentDescription = "Logo Image",
-                contentScale = ContentScale.Crop,
+                tint = MaterialTheme.colorScheme.primary,
             )
         },
         title = {
@@ -40,8 +45,13 @@ fun SkyCastTopBar(onSignOutClick:()-> Unit) {
                 color = MaterialTheme.colorScheme.onSurface,
             )
         }, actions = {
-            TextButton(onClick = onSignOutClick) {
-                Text(text = "Sign out")
+
+            IconButton(onClick = onSignOutClick) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                    contentDescription = "Sign out",
+                    tint = MaterialTheme.colorScheme.primary
+                )
             }
         })
 }

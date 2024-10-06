@@ -24,8 +24,17 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = true
             isMinifyEnabled = false
+        }
+
+        release {
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -103,12 +112,20 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
 
+    //Location
+    implementation(libs.play.services.location)
+
     // Unit testing
     testImplementation(libs.junit)
     testImplementation (libs.kotlinx.coroutines.test)
 
     // Mocking framework
     testImplementation (libs.mockk)
+
+    testImplementation ("org.mockito:mockito-core:3.12.4")
+    testImplementation ("org.mockito:mockito-inline:3.12.4")
+
+    testImplementation (libs.turbine)
 
     // Lifecycle and ViewModel testing
     testImplementation (libs.androidx.core.testing)

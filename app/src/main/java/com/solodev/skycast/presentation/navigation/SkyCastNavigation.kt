@@ -21,7 +21,7 @@ fun SkyCastNavigation(modifier: Modifier = Modifier) {
             SignUpScreen(modifier,navController)
         }
         composable<HomeRoute>{
-            HomeScreen(modifier,navController)
+            HomeScreen(navController)
         }
     }
 }

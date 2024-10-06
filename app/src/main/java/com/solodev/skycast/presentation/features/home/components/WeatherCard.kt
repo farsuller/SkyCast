@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -55,23 +58,37 @@ fun WeatherCard(
                     Text(
                         text = "Now",
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                         fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
                         color = MaterialTheme.colorScheme.onSurface,)
 
                     val formattedTemperature = String.format("%.2f", kelvinToCelsius(weatherState.temperature))
                     Text(text = "Temperature: $formattedTemperature°C")
 
-                    Text(text = "Weather: ${weatherState.weatherDescription
+                    Text(text = "Weather: ${weatherState.weatherMain}")
+
+                    Text(text = "Description: ${weatherState.weatherDescription
                         ?.split(" ")
                         ?.joinToString(" ")
                         { word -> word.replaceFirstChar { it.uppercase() }
                         } ?: "" }")
                 }
 
-                Image(
-                    modifier = Modifier.size(120.dp).align(Alignment.CenterVertically).weight(0.5f),
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                Icon(
+                    modifier = Modifier
+                        .size(90.dp)
+                        .align(Alignment.CenterVertically)
+                        .weight(0.5f),
+                    painter = painterResource(id = when(weatherState.weatherMain){
+                        "Clear" -> R.drawable.sunny
+                        "Rain","Moderate Rain" -> R.drawable.rainy
+                        "Clouds" -> R.drawable.cloud
+                        "Partially cloudy" -> R.drawable.partly_cloudy
+                        "Thunder" -> R.drawable.thunderstorm
+                        else -> R.drawable.sunny
+                    }),
                     contentDescription = "Logo Image",
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
 
@@ -79,6 +96,8 @@ fun WeatherCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.Start
             ) {
+                Spacer(modifier = Modifier.height(20.dp))
+
                 val formattedTemperature = String.format("%.2f", kelvinToCelsius(weatherState.feelsLike))
                 Text(text = "Feels Like: $formattedTemperature°C")
                 Text(text = "Humidity: ${weatherState.humidity}%")

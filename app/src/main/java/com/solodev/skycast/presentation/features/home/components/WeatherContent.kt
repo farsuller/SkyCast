@@ -1,7 +1,6 @@
 package com.solodev.skycast.presentation.features.home.components
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,9 +13,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -27,10 +28,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.solodev.skycast.R
+import com.solodev.skycast.domain.model.City
+import com.solodev.skycast.domain.model.cities
 import com.solodev.skycast.presentation.features.home.state.ForecastState
 import com.solodev.skycast.presentation.features.home.state.WeatherState
 import com.solodev.skycast.presentation.features.home.util.Tabs
@@ -41,7 +42,8 @@ import com.solodev.skycast.utils.convertUnixToReadableTime
 fun WeatherContent(
     paddingValues: PaddingValues,
     weatherState: WeatherState,
-    forecastState: ForecastState
+    forecastState: ForecastState,
+    cityOnClicked : (City) -> Unit
 ) {
 
         var selectedItem by remember { mutableIntStateOf(0) }
@@ -77,28 +79,13 @@ fun WeatherContent(
                             Tabs.HOME -> {
 
                                 when {
-                                    weatherState.isLoading -> {
-                                        Box(
-                                            modifier = Modifier.fillMaxSize(),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            CircularProgressIndicator()
-                                        }
+                                    weatherState.isLoading -> ContentLoading()
+                                    weatherState.errorMessage != null -> ContentError(weatherState.errorMessage)
 
-                                    }
-
-                                    weatherState.errorMessage != null -> {
-
-                                        Box(
-                                            modifier = Modifier.fillMaxSize(),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Column(modifier = Modifier.matchParentSize()) {
-                                                Text(text = "Error: ${weatherState.errorMessage}")
-                                            }
-                                        }
-                                    }
                                     else -> {
+                                        val sunriseText = convertUnixToReadableTime(weatherState.sunrise, weatherState.timezone)
+                                        val sunsetText = convertUnixToReadableTime(weatherState.sunset, weatherState.timezone)
+
                                         Column(
                                             modifier = Modifier
                                                 .fillMaxWidth()
@@ -109,37 +96,28 @@ fun WeatherContent(
                                             horizontalAlignment = Alignment.Start,
                                             verticalArrangement = Arrangement.Top
                                         ) {
-                                            Text(text = "City: ${weatherState.cityName}, ${weatherState.country}")
+                                            Text(text = "Area: ${weatherState.cityName}, ${weatherState.country}")
 
                                             Spacer(modifier = Modifier.height(20.dp))
 
                                             Row(modifier = Modifier.fillMaxWidth()) {
-                                                Column(modifier = Modifier.weight(1f),
-                                                    horizontalAlignment = Alignment.CenterHorizontally) {
-                                                    Text(text = "Sunrise: ${convertUnixToReadableTime(weatherState.sunrise, weatherState.timezone)}")
-                                                    Image(
-                                                        modifier = Modifier.size(50.dp),
-                                                        painter = painterResource(id = R.drawable.cloud_circle),
-                                                        contentDescription = "Logo Image",
-                                                        contentScale = ContentScale.Crop,
-                                                    )
-                                                }
-
-                                                Column(modifier = Modifier.weight(1f),
-                                                    horizontalAlignment = Alignment.CenterHorizontally) {
-                                                    Text(text = "Sunset: ${convertUnixToReadableTime(weatherState.sunset, weatherState.timezone)}")
-                                                    Image(
-                                                        modifier = Modifier.size(50.dp),
-                                                        painter = painterResource(id = R.drawable.cloud_circle),
-                                                        contentDescription = "Logo Image",
-                                                        contentScale = ContentScale.Crop,
-                                                    )
+                                                Row(modifier = Modifier.fillMaxWidth()) {
+                                                    SunIconColumn(modifier = Modifier.weight(1F), label = "Sunrise", timeText = sunriseText, icon = R.drawable.sunrise)
+                                                    SunIconColumn(modifier = Modifier.weight(1F),label = "Sunset", timeText = sunsetText, icon = R.drawable.sunset)
                                                 }
                                             }
 
-
-
                                             WeatherCard(weatherState = weatherState)
+
+                                            Spacer(modifier = Modifier.height(20.dp))
+
+                                            LazyRow(
+                                                horizontalArrangement = Arrangement.spacedBy(3.dp)
+                                            ) {
+                                                items(cities) { city ->
+                                                    CityItem(city = city, onClick = cityOnClicked)
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -147,13 +125,21 @@ fun WeatherContent(
                             }
                             Tabs.WEATHERS -> {
                                 when {
-                                    forecastState.isLoading -> {
-                                        CircularProgressIndicator()
-                                    }
-                                    forecastState.error != null -> {
-                                        Text(text = forecastState.error)
-                                    }
+                                    forecastState.isLoading -> ContentLoading()
+                                    forecastState.error != null -> ContentError(forecastState.error)
+
                                     forecastState.forecast != null -> {
+
+                                        val forecastSunrise = convertUnixToReadableTime(
+                                            forecastState.city?.sunrise ?: 0,
+                                            forecastState.city?.timezone ?: 0)
+
+                                        val forecastSunset = convertUnixToReadableTime(
+                                            forecastState.city?.sunset ?: 0,
+                                            forecastState.city?.timezone ?: 0)
+
+
+
                                         LazyColumn(
                                             modifier = Modifier
                                                 .fillMaxWidth()
@@ -166,17 +152,16 @@ fun WeatherContent(
                                                 ) {
                                                     Text(
                                                         modifier = Modifier.padding(horizontal = 10.dp),
-                                                        text = "${forecastState.city?.name}, ${forecastState.city?.country}")
+                                                        text = " Area: ${forecastState.city?.name}, ${forecastState.city?.country}")
 
-                                                    Text(
-                                                        modifier = Modifier.padding(horizontal = 10.dp),
-                                                        text = "Sunrise ${convertUnixToReadableTime(forecastState.city?.sunrise ?: 0, 
-                                                            forecastState.city?.timezone ?: 0)}")
+                                                    Spacer(modifier = Modifier.height(20.dp))
 
-                                                    Text(
-                                                        modifier = Modifier.padding(horizontal = 10.dp),
-                                                        text = "Sunset ${convertUnixToReadableTime(forecastState.city?.sunset ?: 0,
-                                                            forecastState.city?.timezone ?: 0)}")
+                                                    Row(modifier = Modifier.fillMaxWidth()) {
+                                                        Row(modifier = Modifier.fillMaxWidth()) {
+                                                            SunIconColumn(modifier = Modifier.weight(1F), label = "Sunrise", timeText = forecastSunrise, icon = R.drawable.sunrise)
+                                                            SunIconColumn(modifier = Modifier.weight(1F),label = "Sunset", timeText = forecastSunset, icon = R.drawable.sunset)
+                                                        }
+                                                    }
 
                                                 }
 
@@ -189,10 +174,13 @@ fun WeatherContent(
                                 }
                             }
                         }
-
-
                     }
                 }
             }
         }
     }
+
+
+
+
+

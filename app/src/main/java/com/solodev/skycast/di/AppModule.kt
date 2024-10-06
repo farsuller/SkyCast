@@ -1,5 +1,6 @@
 package com.solodev.skycast.di
 
+import com.solodev.skycast.BuildConfig
 import com.solodev.skycast.data.remote.WeatherApi
 import com.solodev.skycast.data.repository.WeatherRepositoryImpl
 import com.solodev.skycast.domain.repository.WeatherRepository
@@ -10,6 +11,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -22,7 +25,19 @@ object AppModule {
     @Provides
     @Singleton
     fun provideWeatherApi(): WeatherApi {
+        val clientBuilder = OkHttpClient.Builder()
+
+        if (BuildConfig.DEBUG) {
+            val logging = HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
+            clientBuilder.addInterceptor(logging)
+        }
+
+        val client = clientBuilder.build()
+
         return Retrofit.Builder().baseUrl("https://api.openweathermap.org/")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(WeatherApi::class.java)

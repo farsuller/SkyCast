@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -68,13 +69,13 @@ fun ForecastCard(
                         )
 
                     Text(
-                        text = forecast.weather.firstOrNull()?.main ?: "",
+                        text = "Weather: ${forecast.weather.firstOrNull()?.main}",
                         fontSize = MaterialTheme.typography.titleMedium.fontSize,
                         fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
 
-                    Text(text = "Weather: ${forecast.weather.firstOrNull()?.description
+                    Text(text = "Description: ${forecast.weather.firstOrNull()?.description
                         ?.split(" ")
                         ?.joinToString(" ")
                         { word -> word.replaceFirstChar { it.uppercase() }
@@ -82,11 +83,18 @@ fun ForecastCard(
 
 
                 }
-
-                Image(
-                    modifier = Modifier.size(120.dp).align(Alignment.CenterVertically).weight(0.5f),
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                Icon(
+                    modifier = Modifier.size(90.dp).align(Alignment.CenterVertically).weight(0.5f),
+                    painter = painterResource(id = when(forecast.weather.firstOrNull()?.main){
+                        "Clear" -> R.drawable.sunny
+                        "Rain","Moderate Rain" -> R.drawable.rainy
+                        "Clouds" -> R.drawable.cloud
+                        "Partially cloudy" -> R.drawable.partly_cloudy
+                        "Thunder" -> R.drawable.thunderstorm
+                        else -> R.drawable.sunny
+                    }),
                     contentDescription = "Logo Image",
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
 
